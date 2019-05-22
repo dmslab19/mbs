@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: mbs
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: sanghyun
+Implementation-Vendor-Id: mbs
+Build-Jdk: 1.8.0_201
+Implementation-URL: http://projects.spring.io/spring-boot/mbs/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
