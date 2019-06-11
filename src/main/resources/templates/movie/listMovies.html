@@ -1,1 +1,25 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title th:text="|${#temporals.format(date, 'yyyy/M/d')}의 상영 영화|">2019/5/10의
+    영화 목록</title>
+</head>
+<body>
+    <h3>상영 영화 목록</h3>
+    <a th:href="@{'/movies/' + ${date.minusDays(1)}}">&lt; 전날</a>
+    <span th:text="|${#temporals.format(date, 'yyyy/M/d')}의 영화|">2017/5/10의
+        회의실</span>
+    <a th:href="@{'/movies/' + ${date.plusDays(1)}}">다음날 &gt;</a>
+    <ul>
+        <li th:each="movie: ${movies}"><a
+            th:href="@{'/bookings/' + ${date} + '/' + ${movie.movie.movieId}}"
+            th:text="${movie.movie.movieName}"></a></li>
+    </ul>
+    <form
+        th:action="@{/logout}"
+        method="post">
+        <button>로그아웃</button>
+    </form>
+</body>
+</html>

@@ -1,1 +1,55 @@
 <!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8" />
+<title th:text="|${#temporals.format(date, 'yyyy/M/d')}의 ${movie.movieName}|">2019/5/10의
+    영화</title>
+</head>
+<body th:with="user=${#authentication.principal.user}">
+    <div>
+        <a th:href="@{'/movies/' + ${date}}">상영 영화 목록으로 가기</a>
+    </div>
+    <p
+        style="color: red"
+        th:if="${error != null}"
+        th:text="${error}"></p>
+    <form
+        th:object="${bookingForm}"
+        th:action="@{'/bookings/' + ${date} + '/' + ${movieId}}"
+        method="post">
+        영화 제목: <span th:text="${movie.movieName}"> 어벤저스 엔드게임</span> <br />
+        남은 좌석 수: <span th:text="${remainSeats}"> 10</span> <br />
+         예매자 이름: <span th:text="${user.lastName + ' ' + user.firstName}">이 채윤</span> <br />
+        날짜: <span th:text="${#temporals.format(date, 'yyyy/M/d')}">2019/5/10</span>
+        <input type="hidden" th.field="*{bookingDate}" th:value="${#temporals.format(date, 'yyyy/M/d')}"/>
+        <button>예매</button>
+        <br />
+    </form>
+    <table>
+        <tr>
+            <th>예매자</th>
+            <th>기능</th>
+        </tr>
+        <tr th:each="booking : ${bookings}">
+            <td><span th:text="${booking.user.lastName}" /> 
+            <span th:text="${booking.user.firstName}" /></td>
+            <td>
+                <form
+                    th:action="@{'/bookings/' + ${date} + '/' + ${movieId}}"
+                    method="post"
+                    sec:authorize="${hasRole('ADMIN') or #vars.user.userId == #vars.reservation.user.userId}">
+                    <input
+                        type="hidden"
+                        name="bookingId"
+                        th:value="${booking.bookingId}" /> <input
+                        type="submit"
+                        name="cancel"
+                        value="취소" />
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
